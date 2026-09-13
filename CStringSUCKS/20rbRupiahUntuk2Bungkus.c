@@ -7,6 +7,12 @@ typedef struct{
       char *Pdata;
       size_t keepUp;
       size_t len;
+}DDD2;
+
+typedef struct{
+      char *Pdata;
+      size_t keepUp;
+      size_t len;
 }DDD;
 
 typedef struct{
@@ -102,4 +108,6 @@ int main(){
 
       DDD *dinar4 = Womb(&dinar2, &dinar3);
       printAL2(dinar4);
+      dinar3.Pdata[0] = 'b';
+      printAL2(&dinar3);
 }
