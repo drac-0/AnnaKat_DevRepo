@@ -1,6 +1,8 @@
-#include <sys/stat.h>
-
+#include "headerUndUtil/sha.h"
 
 int main(){
+      Checkpoint();
+      startWalking();
+
 
 }
