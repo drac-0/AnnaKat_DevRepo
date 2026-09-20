@@ -56,7 +56,7 @@ int  dfsWalker(char *path);
 short LinearComparison(u32t * fileHashed);
 
 void Checkpoint();
-time_t * readCheckpoint();
+time_t readCheckpoint();
 
 void startWalking();
 
