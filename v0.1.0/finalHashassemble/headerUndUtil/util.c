@@ -7,14 +7,13 @@
 short LinearComparison(u32t * fileHashed){
       //since when i write a function name that's self explanatory?. MEH 
 
-      FILE *binREAD= fopen("/home/draco/vode/AV/db/kl256.bin", "rb");
+      FILE *binREAD= fopen("/home/draco/vode/AV/v0.1.0/db/kl256.bin", "rb");
       fseek(binREAD, 0, SEEK_END); //move cursor to the end 
       long len = ftell(binREAD); //count the len of a file binary contect
       rewind(binREAD); //what the fuck?
 
       u32t * buffer = malloc(len); //where i will write the buffer
       fread(buffer,1,len,binREAD); //read from f, 1-len, put it to buffer
-
 
       for (int i = 0; i < 8; i++) {
             if (fileHashed[i] != buffer[i]) {
@@ -57,19 +56,19 @@ int dfsWalker(char *path){
             else if(entry->d_type == DT_REG){
 
                   struct stat file; 
-                  int Fp = open(entry->d_name, O_RDONLY);
-                  fstat(Fp, &file);
-
+                  stat(entry->d_name, &file);
                   if ((file.st_mode & S_IEXEC) 
                         || (file.st_mode & S_IXGRP)
                         || ( file.st_mode & S_IXOTH)){
                         printf("file name : %s\n", entry->d_name);
                         u32t * H = HashAfile(entry->d_name);
                         if (H != NULL){ //???THE LINE THE LINE 
+                              if (LinearComparison(H)){
+                                    printf("there is something here\n");
+                              };
                               free(H);
                         }
                   }
-                  close(Fp);
             }
       }
 
