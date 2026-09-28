@@ -16,3 +16,21 @@ well.... what all this knowledge serve anyway. I won't get a job with knowing an
 
 My idealistic self
 My pathetic idealistic self.
+
+Does this really necessary?
+
+### A few days after Foreword
+
+I think i will make v0.1.3 to be a vulnerability check. I could use shell script to do this but i've talk about the flaw in scripting for portability. Not all machine use bash as its script, but every machine this AV made for is complying POSIX, therefore its a must for me to avoid the usage of shell scripting language.
+
+### AnnaKav must and mustn't
+
+
+## TODO 
+
+1. Grep a keyword (If it's possible, i want to optimize the grep)
+2. Small check for vulnerability (for now, it's maybe only /etc/passwd permission check)
+
+
+
+
