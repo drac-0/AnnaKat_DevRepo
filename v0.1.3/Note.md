@@ -4,9 +4,9 @@
 
 when searching for a way to prevent the privilege escalation whom exploiting the weak permission on /etc/passwd this idea came across. Do a whole static system scan for the specific keyword. Yes, its grep essentially.
 
-witty comment such as labelling me over-engineer happen often.
+witty comments labelling me over-engineer happen often.
 
-This fuckers don't understand it. How necessary it is in context of learning.
+These fuckers don't understand it. How necessary it is in context of learning.
 
 pass a buffer into a pattern looking function.
 
@@ -28,9 +28,6 @@ I think i will make v0.1.3 to be a vulnerability check. I could use shell script
 
 ## TODO 
 
-1. Grep a keyword (If it's possible, i want to optimize the grep)
-2. Small check for vulnerability (for now, it's maybe only /etc/passwd permission check)
-
-
-
+1. ~Grep a keyword (If it's possible, i want to optimize the grep)~
+2. Small check for vulnerability (for now, it's maybe only /etc/passwd permission check) (DONE)
 

@@ -32,7 +32,6 @@ short LinearComparison(u32t * fileHashed){
 
 }
 
-
 int dfsWalker(char *path){
       time_t checkpoint = readCheckpoint();
       DIR *dir;
