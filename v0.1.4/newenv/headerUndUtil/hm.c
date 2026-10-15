@@ -24,8 +24,10 @@ uint Ihash(u32t sha[8]){
 void insertToHm(u32t sha[8], char *name){
       hashed * data = malloc(sizeof(hashed));
       uint index,counter;
-      data->name = name;
       index = Ihash(sha) % SL;
+      counter = 0;
+      data->name = name;
+
       for (int i = 0 ; i < 8 ; i++){
             data->sha[i] = sha[i];
       }
@@ -34,6 +36,7 @@ void insertToHm(u32t sha[8], char *name){
 
       if (counter == SL){
             printf("ALERT:HASHMAP IS FULL\n");
+            free(data);
             goto end;
       }
       if (hashtable[index] != NULL){
@@ -57,34 +60,45 @@ hashed * get(u32t sha[8]){
       //verify
       while(count < SL ){
             if (hashtable[t] != NULL){
-                  printf("%d | sha of %s  = " , t, hashtable[t]->name);
+                  int x =0;
                   for (int i = 0; i < 8; i++ ){
-                        printf("%08x", hashtable[t]->sha[i]);
+                        if(sha[i] == hashtable[t]->sha[i]){
+                              x += 1;
+                        }
+                        else{
+                              continue;
+                        }
                   }
-            }
 
-            else{
-                  printf("%d | UNALLOCATED", t);
-            }
+                  if (x==8){
+                        printf("it's the file\n");
+                        printf("index of it = %u\n", t);
+                        target = hashtable[t];
+                        return target;
+                  }
 
-            printf("\n");
+            }
             t++;
 
             if (t >= SL) t = 0;
             count++;
       }
-      return target;
 }
 
 //named this main function to hmload later
+//At the end of any coding session, i think it's a must for me to recap what've i done. (2026-10-15)
 int main(){
-      u32t sha[8];
+      u32t shafile[8];
+      u32t new[8];
+
       DIR *dir;
       struct dirent *entry;
       dir = opendir("/home/draco/vode/AnnaKav/db/");
+      chdir("/home/draco/vode/AnnaKav/db/");
+      FILE * b = fopen("./hi2.txt", "rb");
+      fread(new, sizeof(u32t), 8, b);
 
       while(entry = readdir(dir)){
-            chdir("/home/draco/vode/AnnaKav/db/");
             if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0){
                   continue;
             }
@@ -95,15 +109,15 @@ int main(){
                   printf("ERROR");
             }
 
-            ssize_t n = read(Fp, &sha[0], sizeof(u32t));
-            int i = 1;
+            ssize_t n = read(Fp, &shafile[0], sizeof(u32t));
+            uint i = 1;
             while (n > 0){
-                  n = read(Fp, &sha[i++],sizeof(u32t));
+                  n = read(Fp, &shafile[i++],sizeof(u32t));
             }
 
-            insertToHm(sha, "sarah keylogger");
+            insertToHm(shafile, entry->d_name);
 
-            /*
+            }
             for (int j = 0 ; j < SL; j++){
                   if (hashtable[j] != NULL){
                         printf("%d | sha of %s  = " , j, hashtable[j]->name);
@@ -116,8 +130,18 @@ int main(){
                         printf("%d | UNALLOCATED", j);
                   }
                   printf("\n");
-            }
-            */
-            hashed * data = get(sha);
+
       }
+      hashed * data = get(new);
+      if (data != NULL){
+            for (int i = 0 ; i < 8; i++){
+                  printf("%08x", shafile[i]);
+            }
+            printf("\n");
+      }
+
+      else{
+            printf("GET ERROR\n");
+      }
+
 }
