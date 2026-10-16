@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 //once the hashmap done, the Linear Comparison would become obsolete
-
+/*
 short LinearComparison(u32t * fileHashed){
       //since when i write a function name that's self explanatory?. MEH 
 
@@ -36,10 +36,10 @@ short LinearComparison(u32t * fileHashed){
       return 1;
 
 }
-
+*/
 
 int dfsWalker(char *path){
-      time_t checkpoint = readCheckpoint();
+      //time_t checkpoint = readCheckpoint();
       DIR *dir;
       struct dirent *entry;
       dir = opendir(path);
@@ -67,15 +67,21 @@ int dfsWalker(char *path){
                   int Fp = open(entry->d_name, O_RDONLY);
                   fstat(Fp, &file);
                   printf("file name : %s\n", entry->d_name);
-                  printf("last scan was %ld\n, and last file modified was %ld\n", checkpoint, file.st_mtim.tv_sec);
+                  //printf("last scan was %ld\n, and last file modified was %ld\n", checkpoint, file.st_mtim.tv_sec);
                   if (((file.st_mode & S_IEXEC) 
                         || (file.st_mode & S_IXGRP)
-                        || ( file.st_mode & S_IXOTH)) & (file.st_mtim.tv_sec > checkpoint)){
+                        || ( file.st_mode & S_IXOTH)) /*& (file.st_mtim.tv_sec > checkpoint)*/){
                         printf("file name : %s\n", entry->d_name);
                         u32t * H = HashAfile(entry->d_name);
                         if (H != NULL){ //???THE LINE THE LINE 
-                              free(H);
+                              hashed * check = get(H);
+                              if (check != NULL){
+                                    printf("There is something here\n");
+                                    printf("file %s is a %s", entry->d_name, check->name);
+                              }
                         }
+
+                        free(H);
                   }
                   close(Fp);
             }
@@ -134,5 +140,4 @@ void WAFPrev(){
       else{
             printf("/etc/shadow permission complying the rule\n");
       }
-
 }

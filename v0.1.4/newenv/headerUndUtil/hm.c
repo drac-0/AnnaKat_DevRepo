@@ -7,12 +7,12 @@
 #include <unistd.h>
 #include <dirent.h>
 
-typedef struct{
-      u32t sha[8];
-      char * name;
-}hashed;
-
 hashed * hashtable[SL] ;
+
+//This index hashing value is a homework for me 
+//It wasn't the most effective one 
+//Effective In context of what?
+//i don't know
 uint Ihash(u32t sha[8]){
       uint hashval = 0;
       for (int i = 0; i < 8; i++){
@@ -20,6 +20,7 @@ uint Ihash(u32t sha[8]){
       }
       return hashval;
 }
+
 
 void insertToHm(u32t sha[8], char *name){
       hashed * data = malloc(sizeof(hashed));
@@ -53,7 +54,7 @@ void insertToHm(u32t sha[8], char *name){
       end:
 }
 
-hashed * get(u32t sha[8]){
+hashed * get(u32t *sha){
       hashed * target = malloc(sizeof(hashed));
       uint t = Ihash(sha) % SL;
       uint count = 0;
@@ -62,7 +63,6 @@ hashed * get(u32t sha[8]){
             if (hashtable[t] != NULL){
                   int x =0;
                   for (int i = 0; i < 8; i++ ){
-                        printf("iteration number %d with t being %u\n", i,t);
                         if(sha[i] != hashtable[t]->sha[i]){
                               break;
                         }
@@ -72,8 +72,6 @@ hashed * get(u32t sha[8]){
                   }
 
                   if (x==8){
-                        printf("it's the file\n");
-                        printf("index of it = %u\n", t);
                         target = hashtable[t];
                         return target;
                   }
@@ -83,6 +81,9 @@ hashed * get(u32t sha[8]){
             if (t >= SL) t = 0;
             count++;
       }
+
+      //no HM doesn't contain the item
+      return NULL;
 }
 
 //named this main function to hmload later
@@ -95,14 +96,16 @@ int main(int argc, char * argv[]){
       struct dirent *entry;
       dir = opendir("/home/draco/vode/AnnaKav/db/");
       chdir("/home/draco/vode/AnnaKav/db/");
-      FILE * b = fopen(argv[1], "rb");
-      fread(new, sizeof(u32t), 8, b);
 
       while(entry = readdir(dir)){
             if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0){
                   continue;
             }
-            printf("opening file %s\n", entry->d_name);
+
+            char actfm[BUFSIZ] = "";
+            for (int i = 0 ; i < strlen(entry->d_name) ; i++){
+                  actfm[i] = entry->d_name[i];
+            }
 
             int Fp = open(entry->d_name, O_RDONLY);
             if (Fp == -1 ){
@@ -115,23 +118,11 @@ int main(int argc, char * argv[]){
                   n = read(Fp, &shafile[i++],sizeof(u32t));
             }
 
-            insertToHm(shafile, entry->d_name);
-
-            }
-            for (int j = 0 ; j < SL; j++){
-                  if (hashtable[j] != NULL){
-                        printf("%d | sha of %s  = " , j, hashtable[j]->name);
-                        for (int i = 0; i < 8; i++ ){
-                              printf("%08x", hashtable[j]->sha[i]);
-                        }
-                  }
-
-                  else{
-                        printf("%d | UNALLOCATED", j);
-                  }
-                  printf("\n");
-
+            insertToHm(shafile, actfm);
+            close(Fp);
       }
+
+      /*
       hashed * data = get(new);
       if (data != NULL){
             for (int i = 0 ; i < 8; i++){
@@ -141,6 +132,7 @@ int main(int argc, char * argv[]){
       }
 
       else{
-            printf("GET ERROR\n");
+            printf("Item doesn't exist in hashmap\n");
       }
+      */
 }

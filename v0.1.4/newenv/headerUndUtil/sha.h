@@ -14,8 +14,16 @@
 
 typedef uint64_t u64t;
 typedef uint32_t u32t;
+typedef struct{
+      u32t sha[8];
+      char * name;
+}hashed;
 
+#ifndef SL
 #define SL 10
+#endif // !SL
+
+
 #ifndef rotate
 #define rotate(num, val) ((num >> val) | (num << (32 - val)))
 #endif 
@@ -60,5 +68,13 @@ void Checkpoint();
 time_t readCheckpoint();
 
 void startWalking();
+
+
+int hmload();
+hashed * get(u32t * sha);
+void insertToHm(u32t * sha, char *name);
+uint Ihash(u32t * sha);
+extern hashed * hashtable[SL] ;
+
 
 #endif // !SHA
