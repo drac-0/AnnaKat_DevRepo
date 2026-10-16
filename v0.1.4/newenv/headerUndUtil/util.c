@@ -10,7 +10,8 @@
 #include <stdlib.h>
 
 //once the hashmap done, the Linear Comparison would become obsolete
-/*
+/*2026-10-17 It's done. Linear Comparison Obsolete by this date. 
+//So i will commented it
 short LinearComparison(u32t * fileHashed){
       //since when i write a function name that's self explanatory?. MEH 
 
@@ -82,6 +83,9 @@ int dfsWalker(char *path){
                         }
 
                         free(H);
+                  }
+                  else{ 
+                        printf("%s is not executable\n", entry->d_name);
                   }
                   close(Fp);
             }
