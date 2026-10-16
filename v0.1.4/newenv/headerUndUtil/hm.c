@@ -62,11 +62,12 @@ hashed * get(u32t sha[8]){
             if (hashtable[t] != NULL){
                   int x =0;
                   for (int i = 0; i < 8; i++ ){
-                        if(sha[i] == hashtable[t]->sha[i]){
-                              x += 1;
+                        printf("iteration number %d with t being %u\n", i,t);
+                        if(sha[i] != hashtable[t]->sha[i]){
+                              break;
                         }
                         else{
-                              continue;
+                              x++;
                         }
                   }
 
@@ -76,7 +77,6 @@ hashed * get(u32t sha[8]){
                         target = hashtable[t];
                         return target;
                   }
-
             }
             t++;
 
@@ -87,7 +87,7 @@ hashed * get(u32t sha[8]){
 
 //named this main function to hmload later
 //At the end of any coding session, i think it's a must for me to recap what've i done. (2026-10-15)
-int main(){
+int main(int argc, char * argv[]){
       u32t shafile[8];
       u32t new[8];
 
@@ -95,7 +95,7 @@ int main(){
       struct dirent *entry;
       dir = opendir("/home/draco/vode/AnnaKav/db/");
       chdir("/home/draco/vode/AnnaKav/db/");
-      FILE * b = fopen("./hi2.txt", "rb");
+      FILE * b = fopen(argv[1], "rb");
       fread(new, sizeof(u32t), 8, b);
 
       while(entry = readdir(dir)){
@@ -135,7 +135,7 @@ int main(){
       hashed * data = get(new);
       if (data != NULL){
             for (int i = 0 ; i < 8; i++){
-                  printf("%08x", shafile[i]);
+                  printf("%08x", data->sha[i]);
             }
             printf("\n");
       }
@@ -143,5 +143,4 @@ int main(){
       else{
             printf("GET ERROR\n");
       }
-
 }
